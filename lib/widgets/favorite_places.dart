@@ -29,6 +29,22 @@ class _FavoritePlacesState extends ConsumerState<FavoritePlaces> {
   @override
   Widget build(BuildContext context) {
     final List<FavoritePlace> favoritePlaces = ref.watch(favoritePlaceProvider);
+    
+    
+    Widget content = const Center(
+      child: Text('No places added yet!', style: TextStyle(color: Colors.white),),
+    );
+    if(favoritePlaces.isNotEmpty){
+     content = ListView.builder(
+          itemCount: favoritePlaces.length,
+          itemBuilder: (ctx, index) => ListTile(
+            key: ValueKey(favoritePlaces[index]),
+            title: Text(favoritePlaces[index].title),
+            onTap: () {
+              _navigatePage(context, favoritePlaces[index].title);
+            },
+          ));
+    }
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Places'),
@@ -41,15 +57,7 @@ class _FavoritePlacesState extends ConsumerState<FavoritePlaces> {
           ),
         ],
       ),
-      body: ListView.builder(
-          itemCount: favoritePlaces.length,
-          itemBuilder: (ctx, index) => ListTile(
-                key: ValueKey(favoritePlaces[index]),
-                title: Text(favoritePlaces[index].title),
-                onTap: () {
-                  _navigatePage(context, favoritePlaces[index].title);
-                },
-              )),
+      body: content,
     );
   }
 }
