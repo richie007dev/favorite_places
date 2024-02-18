@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class PlaceDetails extends StatelessWidget {
-  const PlaceDetails({super.key, required this.title});
+class PlaceDetailScreen extends StatelessWidget {
+  const PlaceDetailScreen({super.key, required this.title});
   final String title;
 
   @override
@@ -11,7 +11,10 @@ class PlaceDetails extends StatelessWidget {
         title: Text(title),
       ),
       body: Center(
-        child: Text(title, style: const TextStyle(color: Colors.white),),
+        child: Text(
+          title,
+          style: const TextStyle(color: Colors.white),
+        ),
       ),
     );
   }

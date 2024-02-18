@@ -3,14 +3,14 @@ import 'package:favorite_places/providers/favorite_place_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NewPlace extends ConsumerStatefulWidget {
-  const NewPlace({super.key});
+class AddPlaceScreen extends ConsumerStatefulWidget {
+  const AddPlaceScreen({super.key});
 
   @override
-  ConsumerState<NewPlace> createState() => _NewPlaceState();
+  ConsumerState<AddPlaceScreen> createState() => _NewPlaceState();
 }
 
-class _NewPlaceState extends ConsumerState<NewPlace> {
+class _NewPlaceState extends ConsumerState<AddPlaceScreen> {
   final _formKey = GlobalKey<FormState>();
 
   var _enteredTitle = '';
@@ -40,9 +40,7 @@ class _NewPlaceState extends ConsumerState<NewPlace> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                style: const TextStyle(
-                  color: Colors.white
-                ),
+                style: const TextStyle(color: Colors.white),
                 maxLength: 20,
                 decoration: const InputDecoration(
                   label: Text(
