@@ -5,22 +5,10 @@ import 'package:favorite_places/widgets/places_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class PlacesScreen extends ConsumerStatefulWidget {
+class PlacesScreen extends ConsumerWidget {
   const PlacesScreen({super.key});
-
   @override
-  ConsumerState<PlacesScreen> createState() => _FavoritePlacesState();
-}
-
-class _FavoritePlacesState extends ConsumerState<PlacesScreen> {
-  void _addPlace(BuildContext context) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (ctx) => const AddPlaceScreen()),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final List<Place> favoritePlaces = ref.watch(userPlacesProvider);
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +16,9 @@ class _FavoritePlacesState extends ConsumerState<PlacesScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              _addPlace(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (ctx) => const AddPlaceScreen()),
+              );
             },
             icon: const Icon(Icons.add),
           ),
