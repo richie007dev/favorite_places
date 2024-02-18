@@ -17,7 +17,9 @@ class NewPlace extends StatelessWidget {
             children: [
               TextFormField(
                 maxLength: 20,
-                decoration: const InputDecoration(label: Text('Title')),
+                decoration: const InputDecoration(
+                  label: Text('Title'),
+                ),
               ),
               const SizedBox(
                 height: 16,
