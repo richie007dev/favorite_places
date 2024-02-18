@@ -1,4 +1,4 @@
-import 'package:favorite_places/models/favorite_place.dart';
+import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/providers/favorite_place_provider.dart';
 import 'package:favorite_places/widgets/new_place.dart';
 import 'package:favorite_places/widgets/place_details.dart';
@@ -28,7 +28,7 @@ class _FavoritePlacesState extends ConsumerState<FavoritePlaces> {
 
   @override
   Widget build(BuildContext context) {
-    final List<FavoritePlace> favoritePlaces = ref.watch(favoritePlaceProvider);
+    final List<Place> favoritePlaces = ref.watch(favoritePlaceProvider);
     
     
     Widget content = const Center(
