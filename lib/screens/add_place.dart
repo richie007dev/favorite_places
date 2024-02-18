@@ -40,7 +40,8 @@ class _NewPlaceState extends ConsumerState<AddPlaceScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                style: const TextStyle(color: Colors.white),
+                style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                    color: Theme.of(context).colorScheme.onBackground),
                 maxLength: 20,
                 decoration: const InputDecoration(
                   label: Text(
