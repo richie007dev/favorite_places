@@ -19,7 +19,7 @@ class _NewPlaceState extends ConsumerState<AddPlaceScreen> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       ref
-          .read(favoritePlaceProvider.notifier)
+          .read(userPlacesProvider.notifier)
           .addPlace(Place(title: _enteredTitle));
 
       Navigator.of(context).pop();

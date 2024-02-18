@@ -21,7 +21,7 @@ class _FavoritePlacesState extends ConsumerState<PlacesScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Place> favoritePlaces = ref.watch(favoritePlaceProvider);
+    final List<Place> favoritePlaces = ref.watch(userPlacesProvider);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Places'),
