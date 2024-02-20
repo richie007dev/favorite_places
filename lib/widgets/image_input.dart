@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ImageInput extends StatefulWidget {
-  const ImageInput({super.key});
+  const ImageInput({super.key, required this.onPickImage});
+  final void Function(File image) onPickImage;
 
   @override
   State<ImageInput> createState() => _ImageInputState();
@@ -23,6 +24,7 @@ class _ImageInputState extends State<ImageInput> {
         _selectedImage = File(pickedImage.path);
       },
     );
+    widget.onPickImage(_selectedImage!);
   }
 
   @override
@@ -45,9 +47,11 @@ class _ImageInputState extends State<ImageInput> {
     }
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(
-              width: 1,
-              color: Theme.of(context).primaryColor.withOpacity(0.2))),
+        border: Border.all(
+          width: 1,
+          color: Theme.of(context).primaryColor.withOpacity(0.2),
+        ),
+      ),
       height: 250,
       width: double.infinity,
       alignment: Alignment.center,
