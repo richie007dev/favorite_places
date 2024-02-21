@@ -1,16 +1,30 @@
+import 'dart:convert';
+
+import 'package:favorite_places/models/place.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:http/http.dart' as http;
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({super.key});
+  const LocationInput({super.key, required this.onSelectLocation});
+  final void Function(PlaceLocation location) onSelectLocation;
 
   @override
   State<LocationInput> createState() => _LocationInputState();
 }
 
 class _LocationInputState extends State<LocationInput> {
-  // Location? _pickedLocation;
+  PlaceLocation? _pickedLocation;
   var isGettingLocation = false;
+  String get locationImage {
+    if (_pickedLocation == null) {
+      return '';
+    }
+    final latitude = _pickedLocation!.latitude;
+    final longitude = _pickedLocation!.latitude;
+    return 'https://maps.googleapis.com/maps/api/staticmap?center=$latitude,$longitude&zoom=12&size=400x400&markers=color:red%7Clabel:A%7C$latitude,$longitude&key=AIzaSyAcF_B3PqbpqPunPZ4axjdIwTZOKeYD35g';
+  }
+
   void _getCurrentLocation() async {
     Location location = Location();
 
@@ -39,13 +53,27 @@ class _LocationInputState extends State<LocationInput> {
       },
     );
     locationData = await location.getLocation();
+    final latitude = locationData.latitude;
+    final longitude = locationData.longitude;
+    if (latitude == null || longitude == null) {
+      return;
+    }
+    final url = Uri.parse(
+        'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyAcF_B3PqbpqPunPZ4axjdIwTZOKeYD35g');
+    final response = await http.get(url);
+    final respData = json.decode(response.body);
+
+    final address = respData['results'][0]['formatted_address'];
+
     setState(
       () {
+        _pickedLocation = PlaceLocation(
+            latitude: latitude, longitude: longitude, address: address);
         isGettingLocation = false;
       },
     );
-    print(locationData.longitude);
-    print(locationData.latitude);
+    widget.onSelectLocation(_pickedLocation!);
+
   }
 
   @override
@@ -58,6 +86,14 @@ class _LocationInputState extends State<LocationInput> {
           .copyWith(color: Theme.of(context).colorScheme.onBackground),
       textAlign: TextAlign.center,
     );
+    if (_pickedLocation != null) {
+      previewContent = Image.network(
+        locationImage,
+        fit: BoxFit.cover,
+        height: double.infinity,
+        width: double.infinity,
+      );
+    }
     if (isGettingLocation) {
       previewContent = const CircularProgressIndicator();
     }

@@ -19,16 +19,20 @@ class _NewPlaceState extends ConsumerState<AddPlaceScreen> {
 
   var _enteredTitle = '';
   File? _selectedImage;
+  PlaceLocation? _selectedLocation;
 
   void _addPlace(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      if (_selectedImage == null) {
+      if (_selectedImage == null || _selectedLocation == null) {
         return;
       }
-      ref
-          .read(userPlacesProvider.notifier)
-          .addPlace(Place(title: _enteredTitle, image: _selectedImage!));
+      ref.read(userPlacesProvider.notifier).addPlace(
+            Place(
+                title: _enteredTitle,
+                image: _selectedImage!,
+                location: _selectedLocation!),
+          );
 
       Navigator.of(context).pop();
     }
@@ -40,62 +44,68 @@ class _NewPlaceState extends ConsumerState<AddPlaceScreen> {
       appBar: AppBar(
         title: const Text('Add new place'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextFormField(
-                style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                    color: Theme.of(context).colorScheme.onBackground),
-                maxLength: 20,
-                decoration: const InputDecoration(
-                  label: Text(
-                    'Title',
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      color: Theme.of(context).colorScheme.onBackground),
+                  maxLength: 20,
+                  decoration: const InputDecoration(
+                    label: Text(
+                      'Title',
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null ||
+                        value.isEmpty ||
+                        value.trim().length <= 1) {
+                      return 'Enter Something!';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _enteredTitle = value!;
+                  },
+                ),
+                ImageInput(
+                  onPickImage: (image) {
+                    _selectedImage = image;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                LocationInput(
+                  onSelectLocation: (location) {
+                    _selectedLocation = location;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _addPlace(context);
+                  },
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add),
+                      SizedBox(
+                        width: 12,
+                      ),
+                      Text('Add Place')
+                    ],
                   ),
                 ),
-                validator: (value) {
-                  if (value == null ||
-                      value.isEmpty ||
-                      value.trim().length <= 1) {
-                    return 'Enter Something!';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _enteredTitle = value!;
-                },
-              ),
-              ImageInput(
-                onPickImage: (image) {
-                  _selectedImage = image;
-                },
-              ),
-              const SizedBox(
-                height: 16,
-              ),
-              LocationInput(),
-              const SizedBox(
-                height: 16,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  _addPlace(context);
-                },
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.add),
-                    SizedBox(
-                      width: 12,
-                    ),
-                    Text('Add Place')
-                  ],
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
