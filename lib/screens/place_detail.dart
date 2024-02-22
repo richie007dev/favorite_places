@@ -1,6 +1,5 @@
 import 'package:favorite_places/models/place.dart';
 import 'package:favorite_places/screens/map.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
