@@ -27,12 +27,9 @@ class _NewPlaceState extends ConsumerState<AddPlaceScreen> {
       if (_selectedImage == null || _selectedLocation == null) {
         return;
       }
-      ref.read(userPlacesProvider.notifier).addPlace(
-            Place(
-                title: _enteredTitle,
-                image: _selectedImage!,
-                location: _selectedLocation!),
-          );
+      ref
+          .read(userPlacesProvider.notifier)
+          .addPlace(_enteredTitle, _selectedImage!, _selectedLocation!);
 
       Navigator.of(context).pop();
     }
